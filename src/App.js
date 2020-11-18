@@ -11,9 +11,10 @@ function App() {
   let [calories, setCalories] = useState('');
   let [image, setImage] = useState('');
   let [allFoods, setAllFoods] = useState(foods)
+  let [showFoods, setShowFoods] = useState(foods)
 
   const FoodBoxes = (food) => {
-    return allFoods.map(eachFood => {
+    return showFoods.map(eachFood => {
       return <FoodBox {...eachFood} />
     })
 
@@ -28,6 +29,7 @@ function App() {
       name, calories, image
     }
 
+    setShowFoods([newFood, ...showFoods])
     setAllFoods([newFood, ...allFoods])
   }
 
@@ -43,9 +45,20 @@ function App() {
     setImage(event.target.value)
   }
 
+  const searchFood = (event) => {
+    console.log(event.target.value);
+    let filteredFoods = allFoods.filter((eachFood) => {
+      return eachFood.name.toUpperCase().includes(event.target.value.toUpperCase())
+    })
+    setShowFoods(filteredFoods);
+  }
+
   return (
     <div className="App">
       <h1>IronNutrition</h1>
+      <form>
+        <input onChange={searchFood} type="text" placeholder="Search Here" />
+      </form>
       <button onClick={showFoodForm}>Add New Food</button>
       {newFoodForm ?
         <div>
